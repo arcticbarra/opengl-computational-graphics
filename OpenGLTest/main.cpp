@@ -35,11 +35,11 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3]) {
   glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
        // Top face (y = 1.0f)
        // Define vertices in counter-clockwise (CCW) order with normal pointing out
+  // Random colors
+  glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
   for (int i = 0; i < sides.size(); i++) {
     vector<vector<float>> side = sides[i];
 //    glColor3f(0.658824f, 0.658824f, 0.658824f);     // Light Gray
-    // Random colors
-    glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
       glVertex3f((coords[0] * factors[1][0]) + factors[0][0], (coords[1] * factors[1][1]) + factors[0][1], (coords[2] * factors[1][2]) + factors[0][2]);
