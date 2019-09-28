@@ -777,6 +777,101 @@ void display() {
         }
     }
     );
+    
+    //EARS
+    figures.push_back( // right
+    {
+        {
+            // front
+            {1.5f, 15.0f, -0.25f},
+            {1.5f, 16.5f, -0.25f},
+            {2.5f, 16.5f, -0.25f},
+            {2.5f, 15.0f, -0.25f}
+        },
+        {
+            // back
+            {1.5f, 15.0f, -1.0f},
+            {1.5f, 16.5f, -1.0f},
+            {2.5f, 16.5f, -1.0f},
+            {2.5f, 15.0f, -1.0f}
+        },
+        {
+            // left (your left if you're seeing the llama from the front)
+            {1.5f, 15.0f, -1.0f},
+            {1.5f, 16.5f, -1.0f},
+            {1.5f, 16.5f, -0.25f},
+            {1.5f, 15.0f, -0.25f}
+        },
+        {
+            // top
+            {1.5f, 16.5f, -0.25f},
+            {1.5f, 16.5f, -1.0f},
+            {2.5f, 16.5f, -1.0f},
+            {2.5f, 16.5f, -0.25f}
+        },
+        {
+            // right
+            {2.5f, 15.0f, -0.25f},
+            {2.5f, 16.5f, -0.25f},
+            {2.5f, 16.5f, -1.0f},
+            {2.5f, 15.0f, -1.0f}
+        },
+        {
+            // bottom
+            {1.5f, 15.0f, -0.25f},
+            {1.5f, 15.0f, -1.0f},
+            {2.5f, 15.0f, -1.0f},
+            {2.5f, 15.0f, -0.25f}
+        }
+    }
+    );
+    
+    figures.push_back( // left
+    {
+        {
+            // front
+            {3.1f, 15.0f, -0.25f},
+            {3.1f, 16.5f, -0.25f},
+            {4.1f, 16.5f, -0.25f},
+            {4.1f, 15.0f, -0.25f}
+        },
+        {
+            // back
+            {3.1f, 15.0f, -1.0f},
+            {3.1f, 16.5f, -1.0f},
+            {4.1f, 16.5f, -1.0f},
+            {4.1f, 15.0f, -1.0f}
+        },
+        {
+            // left (your left if you're seeing the llama from the front)
+            {3.1f, 15.0f, -1.0f},
+            {3.1f, 16.5f, -1.0f},
+            {3.1f, 16.5f, -0.25f},
+            {3.1f, 15.0f, -0.25f}
+        },
+        {
+            // top
+            {3.1f, 16.5f, -0.25f},
+            {3.1f, 16.5f, -1.0f},
+            {4.1f, 16.5f, -1.0f},
+            {4.1f, 16.5f, -0.25f}
+        },
+        {
+            // right
+            {4.1f, 15.0f, -0.25f},
+            {4.1f, 16.5f, -0.25f},
+            {4.1f, 16.5f, -1.0f},
+            {4.1f, 15.0f, -1.0f}
+        },
+        {
+            // bottom
+            {3.1f, 15.0f, -0.25f},
+            {3.1f, 15.0f, -1.0f},
+            {4.1f, 15.0f, -1.0f},
+            {4.1f, 15.0f, -0.25f}
+        }
+    }
+    );
   
   
   // CHANGE HERE TO TRANSLATE!!!
@@ -822,7 +917,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
    glLoadIdentity();             // Reset
    // Enable perspective projection with fovy, aspect, zNear and zFar
    gluPerspective(90.0f, aspect, 0.1f, 100.0f);
-    gluLookAt(5.0, 5.0, 5.0,  /* eye is at (0,0,5) */
+    gluLookAt(10.0, 20.0, 12.0,  /* eye is at (0,0,5) */
     0.0, 0.0, 0.0,      /* center is at (0,0,0) */
     0.0, 1.0, 0.); /* up is in positive Y direction */
 }
