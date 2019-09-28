@@ -874,6 +874,53 @@ void display() {
     );
     
     // EYES
+    figures.push_back( // right
+    {
+        {
+            // front
+            {4.1f, 13.0f, 0.5f},
+            {4.1f, 14.5f, 0.5f},
+            {4.6f, 14.5f, 0.5f},
+            {4.6f, 13.0f, 0.5f}
+        },
+        {
+            // back
+            {4.1f, 13.0f, -1.0f},
+            {4.1f, 14.5f, -1.0f},
+            {4.6f, 14.5f, -1.0f},
+            {4.6f, 13.0f, -1.0f}
+        },
+        {
+            // left (your left if you're seeing the llama from the front)
+            {4.1f, 13.0f, -1.0f},
+            {4.1f, 14.5f, -1.0f},
+            {4.1f, 14.5f, 0.5f},
+            {4.1f, 13.0f, 0.5f}
+        },
+        {
+            // top
+            {4.1f, 14.5f, 0.5f},
+            {4.1f, 14.5f, -1.0f},
+            {4.6f, 14.5f, -1.0f},
+            {4.6f, 14.5f, 0.5f}
+        },
+        {
+            // right
+            {4.6f, 13.0f, 0.5f},
+            {4.6f, 14.5f, 0.5f},
+            {4.6f, 14.5f, -1.0f},
+            {4.6f, 13.0f, -1.0f}
+        },
+        {
+            // bottom
+            {4.1f, 13.0f, 0.5f},
+            {4.1f, 13.0f, -1.0f},
+            {4.6f, 13.0f, -1.0f},
+            {4.6f, 13.0f, 0.5f}
+        }
+    }
+    );
+    
     figures.push_back( // left
     {
         {
@@ -918,7 +965,8 @@ void display() {
             {1.5f, 13.0f, -1.0f},
             {1.5f, 13.0f, 0.5f}
         }
-    });
+    }
+    );
   
   
   // CHANGE HERE TO TRANSLATE!!!
@@ -964,7 +1012,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
    glLoadIdentity();             // Reset
    // Enable perspective projection with fovy, aspect, zNear and zFar
    gluPerspective(90.0f, aspect, 0.1f, 100.0f);
-    gluLookAt(-10.0, 20.0, 10.0,  /* eye is at (0,0,5) */
+    gluLookAt(8.0, 20.0, 10.0,  /* eye is at (0,0,5) */
     0.0, 0.0, 0.0,      /* center is at (0,0,0) */
     0.0, 1.0, 0.); /* up is in positive Y direction */
 }
