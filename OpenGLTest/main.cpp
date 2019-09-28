@@ -13,6 +13,9 @@
 #include <GLUT/glut.h>
 #include <vector>
 #include <fstream>
+#include <math.h>
+
+#define PI 3.14159265
 
 using namespace std;
 
@@ -42,7 +45,21 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3]) {
     glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
-      glVertex3f((coords[0] * factors[1][0]) + factors[0][0], (coords[1] * factors[1][1]) + factors[0][1], (coords[2] * factors[1][2]) + factors[0][2]);
+
+      float cos_t = cos(factors[2][0] * PI / 180.0);
+      float sin_t = sin(factors[2][0] * PI / 180.0);
+
+      float y = (coords[1] * cos_t) - (coords[2] * sin_t);
+      float z = (coords[1] * sin_t) + (coords[2] * cos_t);
+
+      float x = (coords[0] * cos_t) - (z * sin_t);
+      z = (coords[0] * sin_t) + (z * cos_t);
+
+      glVertex3f(
+                 (x * factors[1][0]) + factors[0][0],
+                 (y * factors[1][1]) + factors[0][1],
+                 (z * factors[1][2]) + factors[0][2]
+                 );
     }
   }
   glEnd();  // End of drawing color-cube
@@ -789,15 +806,15 @@ void display() {
   float scaling_factor_y = 1;
   float scaling_factor_z = 1;
   
-  // CHANGE HERE TO ROTATE!!! (Not used for this first part)
-  float rotating_factor_x = 0;
-  float rotating_factor_y = 0;
-  float rotating_factor_z = 0;
+  // CHANGE HERE TO ROTATE!!! (Currently it rotates on the z-axis)
+  float rotating_factor = 0;
+//  float rotating_factor_y = 0;
+//  float rotating_factor_z = 0;
   
   float factors[3][3] = {
     {translation_factor_x, translation_factor_y, translation_factor_z},
     {scaling_factor_x, scaling_factor_y, scaling_factor_z},
-    {rotating_factor_x, rotating_factor_y, rotating_factor_z}
+    {rotating_factor, 0, 0}
   };
   
   for (int i = 0; i < figures.size(); i++) {
