@@ -31,15 +31,45 @@ void initGL() {
  
 /* Handler for window-repaint event. Called back when the window first appears and
    whenever the window needs to be re-painted. */
-void render_cube(vector<vector<vector<float>>> sides, float factors[3][3]) {
+void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int cube_number) {
   glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
        // Top face (y = 1.0f)
        // Define vertices in counter-clockwise (CCW) order with normal pointing out
-  // Random colors
-  glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
+  
+  // Assign a color to the cube
+  if(cube_number == 17 || cube_number == 18)
+  {
+      // White color for the eyes
+      glColor3f(1.0f, 1.0f, 1.0f);
+  }
+  else if(cube_number == 19 || cube_number == 20)
+  {
+      // Black color for the pupils
+      glColor3f(0.0f, 0.0f, 0.0f);
+  }
+  else if(cube_number == 23 || cube_number == 24)
+  {
+      // Dark gray for the T zone
+      glColor3f(0.5f, 0.5f, 0.5f);
+  }
+  else if(cube_number == 27 || cube_number == 28)
+  {
+      // Pink for the tongue
+      glColor3f(0.737255f, 0.560784f, 0.560784f);
+  }
+  else if(cube_number == 21 || cube_number == 22 || cube_number == 25 || cube_number == 26)
+  {
+      // Light gray for the mouth
+      glColor3f(0.8f, 0.8f, 0.8f);
+  }
+  else
+  {
+      // Random colors for the rest of the body
+      glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
+  }
+    
   for (int i = 0; i < sides.size(); i++) {
     vector<vector<float>> side = sides[i];
-//    glColor3f(0.658824f, 0.658824f, 0.658824f);     // Light Gray
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
       glVertex3f((coords[0] * factors[1][0]) + factors[0][0], (coords[1] * factors[1][1]) + factors[0][1], (coords[2] * factors[1][2]) + factors[0][2]);
@@ -1463,7 +1493,7 @@ void display() {
   };
   
   for (int i = 0; i < figures.size(); i++) {
-    render_cube(figures[i], factors);
+    render_cube(figures[i], factors, i);
   }
  
    glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
@@ -1484,7 +1514,7 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
    glLoadIdentity();             // Reset
    // Enable perspective projection with fovy, aspect, zNear and zFar
    gluPerspective(90.0f, aspect, 0.1f, 100.0f);
-    gluLookAt(8.0, 18.0, 8.0,  /* eye is at (0,0,5) */
+    gluLookAt(-15.0, 18.0, 10.0,  /* eye is at (0,0,5) */
     0.0, 0.0, 0.0,      /* center is at (0,0,0) */
     0.0, 1.0, 0.); /* up is in positive Y direction */
 }
