@@ -93,11 +93,14 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
       if (rotate_z) {
         float cos_t = cos(factors[2][0] * PI / 180.0);
         float sin_t = sin(factors[2][0] * PI / 180.0);
-
         y = (coords[1] * cos_t) - (coords[2] * sin_t);
         z = (coords[1] * sin_t) + (coords[2] * cos_t);
         x = (coords[0] * cos_t) - (z * sin_t);
         z = (coords[0] * sin_t) + (z * cos_t);
+
+//      x = (coords[0] * cos_t) - (coords[1] * sin_t);
+//      y = (coords[0] * sin_t) - (coords[1] * cos_t);
+//      z = coords[2];
       } else if(rotate_y) {
         float cos_t = cos(factors[1][0] * PI / 180.0);
         float sin_t = sin(factors[1][0] * PI / 180.0);
@@ -106,7 +109,7 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
         z = (coords[1] * sin_t) + (coords[2] * cos_t);
         x = (coords[0] * cos_t) - (z * sin_t);
         z = (coords[0] * sin_t) + (z * cos_t);
-      } else {
+      } else { // rotation in x
         float cos_t = cos(factors[0][0] * PI / 180.0);
         float sin_t = sin(factors[0][0] * PI / 180.0);
         // FIX
