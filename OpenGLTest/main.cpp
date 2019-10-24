@@ -19,7 +19,6 @@
 
 using namespace std;
 
-
 char title[] = "3D Shapes";
 float translation_factor_x = 0;
 float translation_factor_y = 0;
@@ -1551,6 +1550,23 @@ bool scaling = false;
 bool translating = true;
 bool rotating = false;
 
+void rotateAxis(int key) {
+    switch(key) {
+        case 120: // x
+            cout << "Rotating in x enabled." << endl;
+            rotate_x = true;
+            break;
+        case 121: // y
+            cout << "Rotating in y enabled." << endl;
+            rotate_y = true;
+            break;
+        case 122: // z
+            cout << "Rotating in z enabled." << endl;
+            rotate_z = true;
+            break;
+    }
+}
+
 void move(int key, int x, int y) {
   switch (key) {
     case GLUT_KEY_UP:
@@ -1611,6 +1627,33 @@ void move(int key, int x, int y) {
       scaling = false;
       translating = false;
       break;
+    case 120: // rotation in x
+      if(rotating)
+      {
+        cout << "Rotating in x enabled." << endl;
+        rotate_x = true;
+        rotate_y = false;
+        rotate_z = false;
+      }
+      break;
+    case 121: // rotation in y
+      if(rotating)
+      {
+        cout << "Rotating in y enabled." << endl;
+        rotate_x = false;
+        rotate_y = true;
+        rotate_z = false;
+      }
+      break;
+    case 122: // rotation in z
+      if(rotating)
+      {
+        cout << "Rotating in z enabled." << endl;
+        rotate_x = false;
+        rotate_y = false;
+        rotate_z = true;
+      }
+      break;
     default:
       break;
   }
@@ -1626,6 +1669,9 @@ int main(int argc, char** argv) {
    glutDisplayFunc(display);       // Register callback handler for window re-paint event
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
    initGL();                       // Our own OpenGL initialization
+   cout << "To translate: press t and use the arrow keys to move." << endl;
+   cout << "To scale: press s and use the arrow keys to change size." << endl;
+   cout << "To rotate: press r and then x, y, z depending on the axis you want to rotate on. Use the arrow keys to rotate." << endl;
    glutSpecialFunc(move);
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
