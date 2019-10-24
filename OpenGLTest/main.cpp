@@ -32,6 +32,9 @@ float scaling_factor_z = 1;
 
 // CHANGE HERE TO ROTATE!!! (Currently it rotates on the z-axis)
 float rotating_factor = 0;
+bool rotate_x = false;
+bool rotate_y = false;
+bool rotate_z = true;
  
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -86,15 +89,33 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
     vector<vector<float>> side = sides[i];
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
+      float x,y,z;
+      
+      if (rotate_z) {
+        float cos_t = cos(factors[2][0] * PI / 180.0);
+        float sin_t = sin(factors[2][0] * PI / 180.0);
 
-      float cos_t = cos(factors[2][0] * PI / 180.0);
-      float sin_t = sin(factors[2][0] * PI / 180.0);
-
-      float y = (coords[1] * cos_t) - (coords[2] * sin_t);
-      float z = (coords[1] * sin_t) + (coords[2] * cos_t);
-
-      float x = (coords[0] * cos_t) - (z * sin_t);
-      z = (coords[0] * sin_t) + (z * cos_t);
+        y = (coords[1] * cos_t) - (coords[2] * sin_t);
+        z = (coords[1] * sin_t) + (coords[2] * cos_t);
+        x = (coords[0] * cos_t) - (z * sin_t);
+        z = (coords[0] * sin_t) + (z * cos_t);
+      } else if(rotate_y) {
+        float cos_t = cos(factors[1][0] * PI / 180.0);
+        float sin_t = sin(factors[1][0] * PI / 180.0);
+        // FIX
+        y = (coords[1] * cos_t) - (coords[2] * sin_t);
+        z = (coords[1] * sin_t) + (coords[2] * cos_t);
+        x = (coords[0] * cos_t) - (z * sin_t);
+        z = (coords[0] * sin_t) + (z * cos_t);
+      } else {
+        float cos_t = cos(factors[0][0] * PI / 180.0);
+        float sin_t = sin(factors[0][0] * PI / 180.0);
+        // FIX
+        y = (coords[1] * cos_t) - (coords[2] * sin_t);
+        z = (coords[1] * sin_t) + (coords[2] * cos_t);
+        x = (coords[0] * cos_t) - (z * sin_t);
+        z = (coords[0] * sin_t) + (z * cos_t);
+      }
 
       glVertex3f(
                  (x * factors[1][0]) + factors[0][0],
@@ -114,17 +135,7 @@ void display() {
    glLoadIdentity();                 // Reset the model-view matrix
    glTranslatef(0.0f, 0.0f, 0.0f);  // Move right and into the screen
   vector<vector<vector<vector<float>>>> figures;
-//
-//  ifstream file;
-//  file.open("output.txt");
-//  char output[100];
-//  if (file.is_open()) {
-//    while (!file.eof()) {
-//       file >> output;
-//       cout<<output;
-//    }
-//  }
-//
+
     // PAWS
     figures.push_back( // right_front_paw
     {
