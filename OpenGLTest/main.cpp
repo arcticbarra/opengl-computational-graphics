@@ -21,6 +21,17 @@ using namespace std;
 
 
 char title[] = "3D Shapes";
+float translation_factor_x = 0;
+float translation_factor_y = 0;
+float translation_factor_z = 0;
+
+// CHANGE HERE TO SCALE!!!
+float scaling_factor_x = 1;
+float scaling_factor_y = 1;
+float scaling_factor_z = 1;
+
+// CHANGE HERE TO ROTATE!!! (Currently it rotates on the z-axis)
+float rotating_factor = 0;
  
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -1489,17 +1500,6 @@ void display() {
   
   
   // CHANGE HERE TO TRANSLATE!!!
-  float translation_factor_x = 0;
-  float translation_factor_y = 0;
-  float translation_factor_z = 0;
-  
-  // CHANGE HERE TO SCALE!!!
-  float scaling_factor_x = 1;
-  float scaling_factor_y = 1;
-  float scaling_factor_z = 1;
-  
-  // CHANGE HERE TO ROTATE!!! (Currently it rotates on the z-axis)
-  float rotating_factor = 0;
 //  float rotating_factor_y = 0;
 //  float rotating_factor_z = 0;
   
@@ -1535,6 +1535,75 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
     0.0, 0.0, 0.0,      /* center is at (0,0,0) */
     0.0, 1.0, 0.); /* up is in positive Y direction */
 }
+
+bool scaling = false;
+bool translating = true;
+bool rotating = false;
+
+void move(int key, int x, int y) {
+  switch (key) {
+    case GLUT_KEY_UP:
+      if (translating) {
+        translation_factor_y += 10;
+      } else if (scaling) {
+        scaling_factor_y += 0.1;
+      } else if (rotating) {
+        rotating_factor += 10;
+      }
+      glutPostRedisplay();
+      break;
+    case GLUT_KEY_DOWN:
+      if (translating) {
+        translation_factor_y -= 10;
+      } else if (scaling) {
+        scaling_factor_y -= 0.1;
+      } else if (rotating) {
+        rotating_factor -= 10;
+      }
+      glutPostRedisplay();
+      break;
+    case GLUT_KEY_LEFT:
+      if (translating) {
+        translation_factor_x -= 10;
+      } else if (scaling) {
+        scaling_factor_x -= 0.1;
+      } else if (rotating) {
+        rotating_factor -= 10;
+      }
+      glutPostRedisplay();
+      break;
+    case GLUT_KEY_RIGHT:
+      if (translating) {
+        translation_factor_x += 10;
+      } else if (scaling) {
+        scaling_factor_x += 0.1;
+      } else if (rotating) {
+        rotating_factor += 10;
+      }
+      glutPostRedisplay();
+      break;
+    case 116: // t for translating
+      cout << "Translating enabled." << endl;
+      rotating = false;
+      scaling = false;
+      translating = true;
+      break;
+    case 115: // s for scaling
+      cout << "Scaling enabled." << endl;
+      rotating = false;
+      scaling = true;
+      translating = false;
+      break;
+    case 114: // r for rotating
+      cout << "Rotating enabled." << endl;
+      rotating = true;
+      scaling = false;
+      translating = false;
+      break;
+    default:
+      break;
+  }
+}
  
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
@@ -1546,6 +1615,7 @@ int main(int argc, char** argv) {
    glutDisplayFunc(display);       // Register callback handler for window re-paint event
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
    initGL();                       // Our own OpenGL initialization
+   glutSpecialFunc(move);
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
 }
