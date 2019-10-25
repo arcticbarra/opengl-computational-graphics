@@ -20,16 +20,18 @@
 using namespace std;
 
 char title[] = "3D Shapes";
+
+// Define translation factors
 float translation_factor_x = 0;
 float translation_factor_y = 0;
 float translation_factor_z = 0;
 
-// CHANGE HERE TO SCALE!!!
+// Define scaling factors
 float scaling_factor_x = 1;
 float scaling_factor_y = 1;
 float scaling_factor_z = 1;
 
-// CHANGE HERE TO ROTATE!!! (Currently it rotates on the z-axis)
+// Define rotating factors
 float rotating_factor = 0;
 bool rotate_x = false;
 bool rotate_y = false;
@@ -1503,11 +1505,6 @@ void display() {
         }
     }
     );
-  
-  
-  // CHANGE HERE TO TRANSLATE!!!
-//  float rotating_factor_y = 0;
-//  float rotating_factor_z = 0;
   
   float factors[3][3] = {
     {translation_factor_x, translation_factor_y, translation_factor_z},
