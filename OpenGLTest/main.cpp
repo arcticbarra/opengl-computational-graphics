@@ -88,35 +88,28 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
     vector<vector<float>> side = sides[i];
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
-      float x,y,z;
+        float x,y,z,cx,cy,cz,cos_t,sin_t;
+        // Get cos(angle) and sin(angle)
+        cos_t = cos(factors[2][0] * PI / 180.0);
+        sin_t = sin(factors[2][0] * PI / 180.0);
+        
+        // Get x, y, and z
+        cx = coords[0];
+        cy = coords[1];
+        cz = coords[2];
       
       if (rotate_z) {
-        float cos_t = cos(factors[2][0] * PI / 180.0);
-        float sin_t = sin(factors[2][0] * PI / 180.0);
-        y = (coords[1] * cos_t) - (coords[2] * sin_t);
-        z = (coords[1] * sin_t) + (coords[2] * cos_t);
-        x = (coords[0] * cos_t) - (z * sin_t);
-        z = (coords[0] * sin_t) + (z * cos_t);
-
-//      x = (coords[0] * cos_t) - (coords[1] * sin_t);
-//      y = (coords[0] * sin_t) - (coords[1] * cos_t);
-//      z = coords[2];
+        x = (cx * cos_t) - (cy * sin_t);
+        y = (cx * sin_t) - (cy * cos_t);
+        z = cz;
       } else if(rotate_y) {
-        float cos_t = cos(factors[1][0] * PI / 180.0);
-        float sin_t = sin(factors[1][0] * PI / 180.0);
-        // FIX
-        y = (coords[1] * cos_t) - (coords[2] * sin_t);
-        z = (coords[1] * sin_t) + (coords[2] * cos_t);
-        x = (coords[0] * cos_t) - (z * sin_t);
-        z = (coords[0] * sin_t) + (z * cos_t);
+        x = (cz * sin_t) + (cx * cos_t);
+        y = cy;
+        z = (cz * cos_t) - (cx * sin_t);
       } else { // rotation in x
-        float cos_t = cos(factors[0][0] * PI / 180.0);
-        float sin_t = sin(factors[0][0] * PI / 180.0);
-        // FIX
-        y = (coords[1] * cos_t) - (coords[2] * sin_t);
-        z = (coords[1] * sin_t) + (coords[2] * cos_t);
-        x = (coords[0] * cos_t) - (z * sin_t);
-        z = (coords[0] * sin_t) + (z * cos_t);
+        x = cx;
+        y = (cy * cos_t) - (cz * sin_t);
+        z = (cy * sin_t) + (cz * cos_t);
       }
 
       glVertex3f(
