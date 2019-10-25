@@ -32,7 +32,9 @@ float scaling_factor_y = 1;
 float scaling_factor_z = 1;
 
 // Define rotating factors
-float rotating_factor = 0;
+float rotating_factor_x = 0;
+float rotating_factor_y = 0;
+float rotating_factor_z = 0;
 bool rotate_x = true;
 bool rotate_y = false;
 bool rotate_z = false;
@@ -90,35 +92,43 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
     vector<vector<float>> side = sides[i];
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
-        float x,y,z,cx,cy,cz,cos_t,sin_t;
-        // Get cos(angle) and sin(angle)
-        cos_t = cos(factors[2][0] * PI / 180.0);
-        sin_t = sin(factors[2][0] * PI / 180.0);
-        
+      float x,y,z,cx,cy,cz,cos_t,sin_t;
         // Get x, y, and z
-        cx = coords[0];
-        cy = coords[1];
-        cz = coords[2];
+      cx = coords[0];
+      cy = coords[1];
+      cz = coords[2];
       
-      if (rotate_z) {
-        x = (cx * cos_t) - (cy * sin_t);
-        y = (cx * sin_t) - (cy * cos_t);
-        z = cz;
-      } else if(rotate_y) {
-        x = (cz * sin_t) + (cx * cos_t);
-        y = cy;
-        z = (cz * cos_t) - (cx * sin_t);
-      } else { // rotation in x
-        x = cx;
-        y = (cy * cos_t) - (cz * sin_t);
-        z = (cy * sin_t) + (cz * cos_t);
-      }
+      // Rotate in Z
+      cos_t = cos(factors[2][2] * PI / 180.0);
+      sin_t = sin(factors[2][2] * PI / 180.0);
+      x = (cx * cos_t) - (cy * sin_t);
+      y = (cx * sin_t) - (cy * cos_t);
+      z = cz;
+      cx = x;
+      cy = y;
+      cz = z;
+        
+      // Rotate in Y
+      cos_t = cos(factors[2][1] * PI / 180.0);
+      sin_t = sin(factors[2][1] * PI / 180.0);
+      x = (cz * sin_t) + (cx * cos_t);
+      y = cy;
+      z = (cz * cos_t) - (cx * sin_t);
+      cx = x;
+      cy = y;
+      cz = z;
+      
+      // Rotate in X
+      cos_t = cos(factors[2][0] * PI / 180.0);
+      sin_t = sin(factors[2][0] * PI / 180.0);
+      x = cx;
+      y = (cy * cos_t) - (cz * sin_t);
+      z = (cy * sin_t) + (cz * cos_t);
 
       glVertex3f(
                  (x * factors[1][0]) + factors[0][0],
                  (y * factors[1][1]) + factors[0][1],
-                 (z * factors[1][2]) + factors[0][2]
-                 );
+                 (z * factors[1][2]) + factors[0][2]);
     }
   }
   glEnd();  // End of drawing color-cube
@@ -1509,7 +1519,7 @@ void display() {
   float factors[3][3] = {
     {translation_factor_x, translation_factor_y, translation_factor_z},
     {scaling_factor_x, scaling_factor_y, scaling_factor_z},
-    {rotating_factor, 0, 0}
+    {rotating_factor_x, rotating_factor_y, rotating_factor_z}
   };
   
   for (int i = 0; i < figures.size(); i++) {
@@ -1568,7 +1578,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_y += 0.1;
       } else if (rotating) {
-        rotating_factor += 10;
+        if (rotate_x) {
+          rotating_factor_x += 10;
+        } else if (rotate_y) {
+          rotating_factor_y += 10;
+        } else {
+          rotating_factor_z += 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1578,7 +1594,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_y -= 0.1;
       } else if (rotating) {
-        rotating_factor -= 10;
+        if (rotate_x) {
+          rotating_factor_x -= 10;
+        } else if (rotate_y) {
+          rotating_factor_y -= 10;
+        } else {
+          rotating_factor_z -= 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1588,7 +1610,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_x -= 0.1;
       } else if (rotating) {
-        rotating_factor -= 10;
+        if (rotate_x) {
+          rotating_factor_x -= 10;
+        } else if (rotate_y) {
+          rotating_factor_y -= 10;
+        } else {
+          rotating_factor_z -= 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1598,7 +1626,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_x += 0.1;
       } else if (rotating) {
-        rotating_factor += 10;
+        if (rotate_x) {
+          rotating_factor_x += 10;
+        } else if (rotate_y) {
+          rotating_factor_y += 10;
+        } else {
+          rotating_factor_z += 10;
+        }
       }
       glutPostRedisplay();
       break;
