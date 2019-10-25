@@ -1651,6 +1651,13 @@ void move(int key, int x, int y) {
       break;
   }
 }
+
+void printInstructions()
+{
+    cout << "To translate: press t and use the arrow keys to move." << endl;
+    cout << "To scale: press s and use the arrow keys to change size." << endl;
+    cout << "To rotate: press r and then x, y, z depending on the axis you want to rotate on. Use the arrow keys to rotate." << endl;
+}
  
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
@@ -1662,9 +1669,7 @@ int main(int argc, char** argv) {
    glutDisplayFunc(display);       // Register callback handler for window re-paint event
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
    initGL();                       // Our own OpenGL initialization
-   cout << "To translate: press t and use the arrow keys to move." << endl;
-   cout << "To scale: press s and use the arrow keys to change size." << endl;
-   cout << "To rotate: press r and then x, y, z depending on the axis you want to rotate on. Use the arrow keys to rotate." << endl;
+   printInstructions();            // Function to print instructions
    glutSpecialFunc(move);
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
