@@ -33,9 +33,9 @@ float scaling_factor_z = 1;
 
 // Define rotating factors
 float rotating_factor = 0;
-bool rotate_x = false;
+bool rotate_x = true;
 bool rotate_y = false;
-bool rotate_z = true;
+bool rotate_z = false;
  
 /* Initialize OpenGL Graphics */
 void initGL() {
