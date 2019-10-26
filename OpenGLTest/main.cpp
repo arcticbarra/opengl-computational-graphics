@@ -1678,6 +1678,7 @@ void move(int key, int x, int y) {
   }
 }
 
+// Print instructions to the console
 void printInstructions()
 {
     cout << "To translate: press t and use the arrow keys to move." << endl;
@@ -1696,7 +1697,7 @@ int main(int argc, char** argv) {
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
    initGL();                       // Our own OpenGL initialization
    printInstructions();            // Function to print instructions
-   glutSpecialFunc(move);
+   glutSpecialFunc(move);          // Function that enables the keyboard to move the llama
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
 }
