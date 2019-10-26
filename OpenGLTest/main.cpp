@@ -5,6 +5,14 @@
 //  Created by Enrique Barragán on 8/19/19.
 //  Copyright © 2019 Enrique Barragán. All rights reserved.
 //
+// Challenge 3
+// Enrique Barragán González A01370878
+// Renata Saldívar González A00818538
+// Lorraine Bichara Assad A01193063
+
+//  https://www.codemiles.com/c-opengl-examples/draw-3d-cube-using-opengl-t9018.html?mobile=on
+//  https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Introduction.html
+
 #define GL_SILENCE_DEPRECATION
 
 #include <iostream>
@@ -19,7 +27,7 @@
 
 using namespace std;
 
-char title[] = "3D Shapes";
+char title[] = "Challenge 3 - Llama";
 
 // Define translation factors
 float translation_factor_x = 0;
@@ -93,7 +101,8 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
       float x,y,z,cx,cy,cz,cos_t,sin_t;
-        // Get x, y, and z
+
+      // Get x, y, and z
       cx = coords[0];
       cy = coords[1];
       cz = coords[2];
