@@ -1553,23 +1553,6 @@ bool scaling = false;
 bool translating = true;
 bool rotating = false;
 
-void rotateAxis(int key) {
-    switch(key) {
-        case 120: // x
-            cout << "Rotating in x enabled." << endl;
-            rotate_x = true;
-            break;
-        case 121: // y
-            cout << "Rotating in y enabled." << endl;
-            rotate_y = true;
-            break;
-        case 122: // z
-            cout << "Rotating in z enabled." << endl;
-            rotate_z = true;
-            break;
-    }
-}
-
 void move(int key, int x, int y) {
   switch (key) {
     case GLUT_KEY_UP:
