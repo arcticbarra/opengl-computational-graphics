@@ -5,6 +5,14 @@
 //  Created by Enrique Barragán on 8/19/19.
 //  Copyright © 2019 Enrique Barragán. All rights reserved.
 //
+// Challenge 3
+// Enrique Barragán González A01370878
+// Renata Saldívar González A00818538
+// Lorraine Bichara Assad A01193063
+
+//  https://www.codemiles.com/c-opengl-examples/draw-3d-cube-using-opengl-t9018.html?mobile=on
+//  https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Introduction.html
+
 #define GL_SILENCE_DEPRECATION
 
 #include <iostream>
@@ -19,22 +27,25 @@
 
 using namespace std;
 
+char title[] = "Challenge 3 - Llama";
 
-char title[] = "3D Shapes";
+// Define translation factors
 float translation_factor_x = 0;
 float translation_factor_y = 0;
 float translation_factor_z = 0;
 
-// CHANGE HERE TO SCALE!!!
+// Define scaling factors
 float scaling_factor_x = 1;
 float scaling_factor_y = 1;
 float scaling_factor_z = 1;
 
-// CHANGE HERE TO ROTATE!!! (Currently it rotates on the z-axis)
-float rotating_factor = 0;
-bool rotate_x = false;
+// Define rotating factors
+float rotating_factor_x = 0;
+float rotating_factor_y = 0;
+float rotating_factor_z = 0;
+bool rotate_x = true;
 bool rotate_y = false;
-bool rotate_z = true;
+bool rotate_z = false;
  
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -89,39 +100,44 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
     vector<vector<float>> side = sides[i];
     for (int j = 0; j < side.size(); j++) {
       vector<float> coords = side[j];
-      float x,y,z;
-      
-      if (rotate_z) {
-        float cos_t = cos(factors[2][0] * PI / 180.0);
-        float sin_t = sin(factors[2][0] * PI / 180.0);
+      float x,y,z,cx,cy,cz,cos_t,sin_t;
 
-        y = (coords[1] * cos_t) - (coords[2] * sin_t);
-        z = (coords[1] * sin_t) + (coords[2] * cos_t);
-        x = (coords[0] * cos_t) - (z * sin_t);
-        z = (coords[0] * sin_t) + (z * cos_t);
-      } else if(rotate_y) {
-        float cos_t = cos(factors[1][0] * PI / 180.0);
-        float sin_t = sin(factors[1][0] * PI / 180.0);
-        // FIX
-        y = (coords[1] * cos_t) - (coords[2] * sin_t);
-        z = (coords[1] * sin_t) + (coords[2] * cos_t);
-        x = (coords[0] * cos_t) - (z * sin_t);
-        z = (coords[0] * sin_t) + (z * cos_t);
-      } else {
-        float cos_t = cos(factors[0][0] * PI / 180.0);
-        float sin_t = sin(factors[0][0] * PI / 180.0);
-        // FIX
-        y = (coords[1] * cos_t) - (coords[2] * sin_t);
-        z = (coords[1] * sin_t) + (coords[2] * cos_t);
-        x = (coords[0] * cos_t) - (z * sin_t);
-        z = (coords[0] * sin_t) + (z * cos_t);
-      }
+      // Get x, y, and z
+      cx = coords[0];
+      cy = coords[1];
+      cz = coords[2];
+      
+      // Rotate in Z
+      cos_t = cos(factors[2][2] * PI / 180.0);
+      sin_t = sin(factors[2][2] * PI / 180.0);
+      x = (cx * cos_t) - (cy * sin_t);
+      y = (cx * sin_t) + (cy * cos_t);
+      z = cz;
+      cx = x;
+      cy = y;
+      cz = z;
+        
+      // Rotate in Y
+      cos_t = cos(factors[2][1] * PI / 180.0);
+      sin_t = sin(factors[2][1] * PI / 180.0);
+      x = (cz * sin_t) + (cx * cos_t);
+      y = cy;
+      z = (cz * cos_t) - (cx * sin_t);
+      cx = x;
+      cy = y;
+      cz = z;
+      
+      // Rotate in X
+      cos_t = cos(factors[2][0] * PI / 180.0);
+      sin_t = sin(factors[2][0] * PI / 180.0);
+      x = cx;
+      y = (cy * cos_t) - (cz * sin_t);
+      z = (cy * sin_t) + (cz * cos_t);
 
       glVertex3f(
                  (x * factors[1][0]) + factors[0][0],
                  (y * factors[1][1]) + factors[0][1],
-                 (z * factors[1][2]) + factors[0][2]
-                 );
+                 (z * factors[1][2]) + factors[0][2]);
     }
   }
   glEnd();  // End of drawing color-cube
@@ -1509,15 +1525,10 @@ void display() {
     }
     );
   
-  
-  // CHANGE HERE TO TRANSLATE!!!
-//  float rotating_factor_y = 0;
-//  float rotating_factor_z = 0;
-  
   float factors[3][3] = {
     {translation_factor_x, translation_factor_y, translation_factor_z},
     {scaling_factor_x, scaling_factor_y, scaling_factor_z},
-    {rotating_factor, 0, 0}
+    {rotating_factor_x, rotating_factor_y, rotating_factor_z}
   };
   
   for (int i = 0; i < figures.size(); i++) {
@@ -1559,7 +1570,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_y += 0.1;
       } else if (rotating) {
-        rotating_factor += 10;
+        if (rotate_x) {
+          rotating_factor_x += 10;
+        } else if (rotate_y) {
+          rotating_factor_y += 10;
+        } else {
+          rotating_factor_z += 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1569,7 +1586,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_y -= 0.1;
       } else if (rotating) {
-        rotating_factor -= 10;
+        if (rotate_x) {
+          rotating_factor_x -= 10;
+        } else if (rotate_y) {
+          rotating_factor_y -= 10;
+        } else {
+          rotating_factor_z -= 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1579,7 +1602,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_x -= 0.1;
       } else if (rotating) {
-        rotating_factor -= 10;
+        if (rotate_x) {
+          rotating_factor_x -= 10;
+        } else if (rotate_y) {
+          rotating_factor_y -= 10;
+        } else {
+          rotating_factor_z -= 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1589,7 +1618,13 @@ void move(int key, int x, int y) {
       } else if (scaling) {
         scaling_factor_x += 0.1;
       } else if (rotating) {
-        rotating_factor += 10;
+        if (rotate_x) {
+          rotating_factor_x += 10;
+        } else if (rotate_y) {
+          rotating_factor_y += 10;
+        } else {
+          rotating_factor_z += 10;
+        }
       }
       glutPostRedisplay();
       break;
@@ -1611,9 +1646,44 @@ void move(int key, int x, int y) {
       scaling = false;
       translating = false;
       break;
+    case 120: // rotation in x
+      if(rotating)
+      {
+        cout << "Rotating in x enabled." << endl;
+        rotate_x = true;
+        rotate_y = false;
+        rotate_z = false;
+      }
+      break;
+    case 121: // rotation in y
+      if(rotating)
+      {
+        cout << "Rotating in y enabled." << endl;
+        rotate_x = false;
+        rotate_y = true;
+        rotate_z = false;
+      }
+      break;
+    case 122: // rotation in z
+      if(rotating)
+      {
+        cout << "Rotating in z enabled." << endl;
+        rotate_x = false;
+        rotate_y = false;
+        rotate_z = true;
+      }
+      break;
     default:
       break;
   }
+}
+
+// Print instructions to the console
+void printInstructions()
+{
+    cout << "To translate: press t and use the arrow keys to move." << endl;
+    cout << "To scale: press s and use the arrow keys to change size." << endl;
+    cout << "To rotate: press r and then x, y, z depending on the axis you want to rotate on. Use the arrow keys to rotate." << endl;
 }
  
 /* Main function: GLUT runs as a console application starting at main() */
@@ -1626,7 +1696,8 @@ int main(int argc, char** argv) {
    glutDisplayFunc(display);       // Register callback handler for window re-paint event
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
    initGL();                       // Our own OpenGL initialization
-   glutSpecialFunc(move);
+   printInstructions();            // Function to print instructions
+   glutSpecialFunc(move);          // Function that enables the keyboard to move the llama
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
 }
