@@ -102,7 +102,7 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
       cos_t = cos(factors[2][2] * PI / 180.0);
       sin_t = sin(factors[2][2] * PI / 180.0);
       x = (cx * cos_t) - (cy * sin_t);
-      y = (cx * sin_t) - (cy * cos_t);
+      y = (cx * sin_t) + (cy * cos_t);
       z = cz;
       cx = x;
       cy = y;
