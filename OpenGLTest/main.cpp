@@ -95,37 +95,37 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
        // Define vertices in counter-clockwise (CCW) order with normal pointing out
   
   // Assign a color to the cube
-  if(cube_number == 17 || cube_number == 18)
-  {
-      // White color for the eyes
-      glColor3f(1.0f, 1.0f, 1.0f);
-  }
-  else if(cube_number == 19 || cube_number == 20)
-  {
-      // Black color for the pupils
-      glColor3f(0.0f, 0.0f, 0.0f);
-  }
-  else if(cube_number == 23 || cube_number == 24)
-  {
-      // Dark gray for the T zone
-      glColor3f(0.5f, 0.5f, 0.5f);
-  }
-  else if(cube_number == 27 || cube_number == 28)
-  {
-      // Pink for the tongue
-      glColor3f(0.737255f, 0.560784f, 0.560784f);
-  }
-  else if(cube_number == 21 || cube_number == 22 || cube_number == 25 || cube_number == 26)
-  {
-      // Light gray for the mouth
-      glColor3f(0.8f, 0.8f, 0.8f);
-  }
-  else
-  {
-      // Random colors for the rest of the body
-      glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
-  }
-    
+//  if(cube_number == 17 || cube_number == 18)
+//  {
+//      // White color for the eyes
+//      glColor3f(1.0f, 1.0f, 1.0f);
+//  }
+//  else if(cube_number == 19 || cube_number == 20)
+//  {
+//      // Black color for the pupils
+//      glColor3f(0.0f, 0.0f, 0.0f);
+//  }
+//  else if(cube_number == 23 || cube_number == 24)
+//  {
+//      // Dark gray for the T zone
+//      glColor3f(0.5f, 0.5f, 0.5f);
+//  }
+//  else if(cube_number == 27 || cube_number == 28)
+//  {
+//      // Pink for the tongue
+//      glColor3f(0.737255f, 0.560784f, 0.560784f);
+//  }
+//  else if(cube_number == 21 || cube_number == 22 || cube_number == 25 || cube_number == 26)
+//  {
+//      // Light gray for the mouth
+//      glColor3f(0.8f, 0.8f, 0.8f);
+//  }
+//  else
+//  {
+//      // Random colors for the rest of the body
+//      glColor3f(((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)));
+//  }
+  glEnable(GL_TEXTURE_2D);
   for (int i = 0; i < sides.size(); i++) {
     vector<vector<float>> side = sides[i];
     for (int j = 0; j < side.size(); j++) {
@@ -163,7 +163,8 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
       x = cx;
       y = (cy * cos_t) - (cz * sin_t);
       z = (cy * sin_t) + (cz * cos_t);
-
+      
+      glTexCoord2f(x, y);
       glVertex3f(
                  (x * factors[1][0]) + factors[0][0],
                  (y * factors[1][1]) + factors[0][1],
@@ -180,30 +181,8 @@ void display() {
     gluLookAt(-15.0, 18.0, 10.0,  /* eye is at (0,0,5) */
     0.0, 0.0, 0.0,      /* center is at (0,0,0) */
     0.0, 1.0, 0.); /* up is in positive Y direction */
-    glEnable(GL_TEXTURE_2D);
     
-    glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex3f(-2.0, -1.0, 0.0);
-        glTexCoord2f(0, 5); glVertex3f(-2.0, 1.0, 0.0);
-        glTexCoord2f(5, 5); glVertex3f(0.0, 1.0, 0.0);
-        glTexCoord2f(5, 0); glVertex3f(0.0, -1.0, 0.0);
-
-        //glTexCoord2f(0, 0); glVertex3f(-2.0, -1.0, 0.0);
-        //glTexCoord2f(0, 1); glVertex3f(-2.0, 1.0, 0.0);
-        //glTexCoord2f(1, 1); glVertex3f(0.0, 1.0, 0.0);
-        //glTexCoord2f(1, 0); glVertex3f(0.0, -1.0, 0.0);
-
-        glTexCoord2f(0.2, 0.2); glVertex3f(1.0, -1.0, 0.0);
-        glTexCoord2f(0.2, 0.8); glVertex3f(1.0, 1.0, 0.0);
-        glTexCoord2f(0.8, 0.8); glVertex3f(2.41421, 1.0, -1.41421);
-        glTexCoord2f(0.8, 0.2); glVertex3f(2.41421, -1.0, -1.41421);
-    glEnd();
-
-    GLUquadricObj *quadric;
-    quadric=gluNewQuadric();
-    gluQuadricNormals(quadric, GLU_SMOOTH);
-    gluQuadricTexture(quadric, GL_TRUE);
-    gluQuadricOrientation(quadric,GLU_INSIDE);
+    glEnable(GL_TEXTURE_2D);
  
    glTranslatef(0.0f, 0.0f, 0.0f);  // Move right and into the screen
   
@@ -218,6 +197,12 @@ void display() {
   for (int i = 0; i < figures.size(); i++) {
     render_cube(figures[i], factors, i);
   }
+  
+  GLUquadricObj *quadric;
+  quadric=gluNewQuadric();
+  gluQuadricNormals(quadric, GLU_SMOOTH);
+  gluQuadricTexture(quadric, GL_TRUE);
+  gluQuadricOrientation(quadric,GLU_INSIDE);
  
    glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 }
