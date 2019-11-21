@@ -10,6 +10,7 @@
 		31169072230AFF9A0093D723 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31169071230AFF9A0093D723 /* main.cpp */; };
 		3116907A230B004B0093D723 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31169079230B004B0093D723 /* OpenGL.framework */; };
 		3116907C230B00580093D723 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3116907B230B00580093D723 /* GLUT.framework */; };
+		31E389EB2386EED200515D62 /* figures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 31E389EA2386EED200515D62 /* figures.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		31169071230AFF9A0093D723 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		31169079230B004B0093D723 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		3116907B230B00580093D723 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		31E389EA2386EED200515D62 /* figures.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = figures.cpp; sourceTree = "<group>"; };
+		31E389EC2386EFDC00515D62 /* figures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = figures.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +68,8 @@
 			isa = PBXGroup;
 			children = (
 				31169071230AFF9A0093D723 /* main.cpp */,
+				31E389EA2386EED200515D62 /* figures.cpp */,
+				31E389EC2386EFDC00515D62 /* figures.h */,
 			);
 			path = OpenGLTest;
 			sourceTree = "<group>";
@@ -135,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				31169072230AFF9A0093D723 /* main.cpp in Sources */,
+				31E389EB2386EED200515D62 /* figures.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
