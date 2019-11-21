@@ -28,6 +28,11 @@
 
 using namespace std;
 
+/*  Create checkerboard texture  */
+#define checkImageWidth 64
+#define checkImageHeight 64
+static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
+
 char title[] = "Challenge 3 - Llama";
 
 // Define translation factors
@@ -47,15 +52,39 @@ float rotating_factor_z = 0;
 bool rotate_x = true;
 bool rotate_y = false;
 bool rotate_z = false;
+
+void makeCheckImage(void)
+{
+   int i, j, c;
+
+    //Generating Checker Patterm
+   for (i = 0; i < checkImageHeight; i++) {
+      for (j = 0; j < checkImageWidth; j++) {
+         c = ((((i&0x8)==0)^((j&0x8))==0))*255;
+         checkImage[i][j][0] = (GLubyte) c;
+         checkImage[i][j][1] = (GLubyte) c;
+         checkImage[i][j][2] = (GLubyte) c;
+         checkImage[i][j][3] = (GLubyte) 255;
+      }
+   }
+}
  
 /* Initialize OpenGL Graphics */
 void initGL() {
-   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-   glClearDepth(1.0f);                   // Set background depth to farthest
-   glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-   glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-   glShadeModel(GL_SMOOTH);   // Enable smooth shading
-   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+    glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
+    makeCheckImage();
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth,
+                 checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                 checkImage);
+    
+//   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+//   glClearDepth(1.0f);                   // Set background depth to farthest
+//   glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+//   glShadeModel(GL_SMOOTH);   // Enable smooth shading
+//   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 }
  
 /* Handler for window-repaint event. Called back when the window first appears and
@@ -146,10 +175,36 @@ void render_cube(vector<vector<vector<float>>> sides, float factors[3][3], int c
 
 void display() {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-   glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
+    // Render a color-cube consisting of 6 quads with different colors
+    glLoadIdentity();                 // Reset the model-view matrix
+    gluLookAt(-15.0, 18.0, 10.0,  /* eye is at (0,0,5) */
+    0.0, 0.0, 0.0,      /* center is at (0,0,0) */
+    0.0, 1.0, 0.); /* up is in positive Y direction */
+    glEnable(GL_TEXTURE_2D);
+    
+    glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f(-2.0, -1.0, 0.0);
+        glTexCoord2f(0, 5); glVertex3f(-2.0, 1.0, 0.0);
+        glTexCoord2f(5, 5); glVertex3f(0.0, 1.0, 0.0);
+        glTexCoord2f(5, 0); glVertex3f(0.0, -1.0, 0.0);
+
+        //glTexCoord2f(0, 0); glVertex3f(-2.0, -1.0, 0.0);
+        //glTexCoord2f(0, 1); glVertex3f(-2.0, 1.0, 0.0);
+        //glTexCoord2f(1, 1); glVertex3f(0.0, 1.0, 0.0);
+        //glTexCoord2f(1, 0); glVertex3f(0.0, -1.0, 0.0);
+
+        glTexCoord2f(0.2, 0.2); glVertex3f(1.0, -1.0, 0.0);
+        glTexCoord2f(0.2, 0.8); glVertex3f(1.0, 1.0, 0.0);
+        glTexCoord2f(0.8, 0.8); glVertex3f(2.41421, 1.0, -1.41421);
+        glTexCoord2f(0.8, 0.2); glVertex3f(2.41421, -1.0, -1.41421);
+    glEnd();
+
+    GLUquadricObj *quadric;
+    quadric=gluNewQuadric();
+    gluQuadricNormals(quadric, GLU_SMOOTH);
+    gluQuadricTexture(quadric, GL_TRUE);
+    gluQuadricOrientation(quadric,GLU_INSIDE);
  
-   // Render a color-cube consisting of 6 quads with different colors
-   glLoadIdentity();                 // Reset the model-view matrix
    glTranslatef(0.0f, 0.0f, 0.0f);  // Move right and into the screen
   
   float factors[3][3] = {
@@ -171,20 +226,22 @@ void display() {
    whenever the window is re-sized with its new width and height */
 void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
    // Compute aspect ratio of the new window
-   if (height == 0) height = 1;                // To prevent divide by 0
-   GLfloat aspect = (GLfloat)width / (GLfloat)height;
- 
-   // Set the viewport to cover the new window
-   glViewport(0, 0, width, height);
- 
-   // Set the aspect ratio of the clipping volume to match the viewport
-   glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
-   glLoadIdentity();             // Reset
-   // Enable perspective projection with fovy, aspect, zNear and zFar
-   gluPerspective(90.0f, aspect, 0.1f, 100.0f);
-    gluLookAt(-15.0, 18.0, 10.0,  /* eye is at (0,0,5) */
-    0.0, 0.0, 0.0,      /* center is at (0,0,0) */
-    0.0, 1.0, 0.); /* up is in positive Y direction */
+    glMatrixMode(GL_PROJECTION);     // To operate on model-view matrix
+    glLoadIdentity();
+    // Set the viewport to cover the new window
+      glViewport(0, 0, width, height);
+    // Enable perspective projection with fovy, aspect, zNear and zFar
+    if (height == 0) height = 1;                // To prevent divide by 0
+      GLfloat aspect = (GLfloat)width / (GLfloat)height;
+    gluPerspective(90.0f, aspect, 0.1f, 100.0f);
+    glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
+   glLoadIdentity();
+    
+   
+//   // Set the aspect ratio of the clipping volume to match the viewport
+//   glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
+//   glLoadIdentity();             // Reset
+
 }
 
 bool scaling = false;
@@ -318,13 +375,13 @@ void printInstructions()
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
    glutInit(&argc, argv);            // Initialize GLUT
-   glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH); // Enable double buffered mode
    glutInitWindowSize(640, 480);   // Set the window's initial width & height
    glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
    glutCreateWindow(title);          // Create window with the given title
+   initGL();                       // Our own OpenGL initialization
    glutDisplayFunc(display);       // Register callback handler for window re-paint event
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
-   initGL();                       // Our own OpenGL initialization
    printInstructions();            // Function to print instructions
    glutSpecialFunc(move);          // Function that enables the keyboard to move the llama
    glutMainLoop();                 // Enter the infinite event-processing loop
